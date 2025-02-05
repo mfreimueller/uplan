@@ -2,9 +2,9 @@
 Planning tool for University of Vienna's ufind, to filter out courses based on given time constraints.
 
 This tools is a solution to a problem I have been facing for the last couple of years. Instead of painstakingly
-figuring out which courses fit your schedule and don't overlap, you can use uplan.
+figuring out which courses fit your schedule and don't overlap, you can now use uplan.
 
-uplan takes a configuration file in JSON format, where you tell your needs:
+uplan takes a configuration file in JSON format, where you write down your needs:
 
 ```
 {
@@ -41,7 +41,7 @@ uplan takes a configuration file in JSON format, where you tell your needs:
 }
 ```
 
-In `modules` you list all the modules you intend to take. Each module needs a `title`, the unique ID from ufind (which you can find in your browsers address bar), a `priority` that you assigned to it (best within 1-10 bounds) and an expected number of `participants`. At some point probably know how many people are typically interested in a course and can provide an approximate number here. Exactness is not important, as we need it only for weight calculation later on.
+In `modules` you list all the modules you intend to take. Each module needs a `title` (which is only a helper for you to remember what module you wrote down here), the unique ID from ufind (which you can find in your browsers address bar), a `priority` that you assigned to it (best within 1-10 bounds) and an expected number of `participants`. At some point probably know how many people are typically interested in a course and can provide an approximate number here. Exactness is not important, as we need it only for weight calculation later on.
 
 In `unavailable_slots` you specify any time slots that you cannot spend studying, because, for example, you have to actually earn a living, or some other minor inconvenience.
 
@@ -59,6 +59,8 @@ To make sure that some course really shows up in your planning, you can specify 
 
 This will make sure that any generated schedules that lack `051920` or `180077` are skipped.
 
+You can also specify courses that you don't want to take, by adding a `-` in front of it: `-180077` excludes the course `180077`.
+
 ### Data Generation
 
 In order to generate your possible schedules, uplan needs to read all possible courses for your modules. This takes a while
@@ -71,3 +73,7 @@ uplan refreshes its data every 2 days, in order to operate with the latest infor
 uplan retrieves and stores the location of the courses and uses this information to calculate the time needed to travel
 between two locations. By modifying `rooms.py` you can add rooms as you need them (they need to be within the location as specified on ufind), or
 modify the time you think you need for travel, as these are only my approximations :-)
+
+For performance reasons, the rooms are stored in alphabetical order and only show the travel cost to themselves and those rooms that
+come after them, in alphabetical order. Therefore, when adding a new room "Spengergasse" (for example), you would need to place the node after "Sensengasse"
+and add the travel costs at the rooms above your newly inserted room (e.g. in "Baden", "Ettenreichgasse" etc.)
