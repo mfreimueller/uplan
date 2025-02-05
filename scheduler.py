@@ -123,6 +123,8 @@ class Schedule:
     def total_chance(self):
         return self._total_chance
 
+# A helper function that returns the timestamp of an event
+# in minutes.
 def sort_events(event):
     start_ts = (event.start_hour * 60) + event.start_minute
 
