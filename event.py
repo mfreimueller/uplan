@@ -100,7 +100,7 @@ class Event:
         if (start_ts - end_ts) < room_delay:
             return True
         
-        return True
+        return False
 
 def convert_slots_to_events(slots):
     converted_slots = []
