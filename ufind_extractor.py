@@ -60,7 +60,7 @@ def read_course_events(course_id, module, priorities):
 
     events = []
 
-    group_idx = content.find("usse-id-group")
+    group_idx = content.find("usse-id-group\"")
 
     group_counter = 1
     while group_idx != -1:
@@ -150,7 +150,7 @@ def read_course_events(course_id, module, priorities):
         })
 
         group_counter += 1
-        group_idx = content.find("usse-id-group", group_idx + 1)
+        group_idx = content.find("usse-id-group\"", group_idx + 1)
 
     print("Finished extraction of events from", title, "...")
 
