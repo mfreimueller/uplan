@@ -45,6 +45,9 @@ class Event:
     def ects(self):
         return self._data["ects"]
 
+    def hash(self):
+        return int(self.id()) * int(self.module_id())
+
     def full_hour(self):
         if self.start_hour is None:
             return None
@@ -100,9 +103,6 @@ def convert_slots_to_events(slots):
     converted_slots = []
 
     for slot in slots:
-        if "start" not in slot:
-            continue
-
         converted_slots.append(Event(slot, None))
     
     return converted_slots
