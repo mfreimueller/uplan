@@ -58,3 +58,10 @@ To make sure that some course really shows up in your planning, you can specify 
 `python uplan.py 2025S.json 051920 180077 > plan.txt`
 
 This will make sure that any generated schedules that lack `051920` or `180077` are skipped.
+
+### Data Generation
+
+In order to generate your possible schedules, uplan needs to read all possible courses for your modules. This takes a while
+and is currently prone to timeouts. If this is the case, you either need to run uplan again or supply the necessary data yourself.
+
+uplan refreshes its data every 2 days, in order to operate with the latest information from ufind.
