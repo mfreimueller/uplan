@@ -58,7 +58,7 @@ class Scheduler:
 
         return generated_schedules
 
-    def _create_schedules_for_event(self, event, all_events, max_depth, parents = [], depth = 1, parent_weight = 1):
+    def _create_schedules_for_event(self, event, all_events, max_depth, parents = [], depth = 1, parent_weight = 0):
         if depth > max_depth:
             return []
 
