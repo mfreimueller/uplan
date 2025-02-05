@@ -171,4 +171,4 @@ cython_debug/
 .pypirc
 
 # Project related files
-*.json
+*.txt

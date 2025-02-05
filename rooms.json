@@ -1,0 +1,104 @@
+{
+    "Baden": {
+        "Baden": 15,
+        "Ettenreichgasse": 120,
+        "Grenzackerstraße": 120,
+        "Hauptgebäude": 120,
+        "Kolingasse": 120,
+        "Lehr-Lern-Labor EDEN": 120,
+        "NIG": 120,
+        "Porzellangasse": 120,
+        "Postgasse": 120,
+        "Sensengasse": 120,
+        "UniCampus": 120,
+        "Währinger Straße": 120
+    },
+    "Ettenreichgasse": {
+        "Ettenreichgasse": 15,
+        "Grenzackerstraße": 15,
+        "Hauptgebäude": 30,
+        "Kolingasse": 30,
+        "Lehr-Lern-Labor EDEN": 45,
+        "NIG": 30,
+        "Porzellangasse": 45,
+        "Postgasse": 30,
+        "Sensengasse": 45,
+        "UniCampus": 45,
+        "Währinger Straße": 45
+    },
+    "Grenzackerstraße": {
+        "Grenzackerstraße": 15,
+        "Hauptgebäude": 30,
+        "Kolingasse": 30,
+        "Lehr-Lern-Labor EDEN": 45,
+        "NIG": 30,
+        "Porzellangasse": 45,
+        "Postgasse": 30,
+        "Sensengasse": 45,
+        "UniCampus": 45,
+        "Währinger Straße": 45
+    },
+    "Hauptgebäude": {
+        "Hauptgebäude": 15,
+        "Kolingasse": 15,
+        "Lehr-Lern-Labor EDEN": 30,
+        "NIG": 15,
+        "Porzellangasse": 30,
+        "Postgasse": 30,
+        "Sensengasse": 30,
+        "UniCampus": 15,
+        "Währinger Straße": 15
+    },
+    "Kolingasse": {
+        "Kolingasse": 15,
+        "Lehr-Lern-Labor EDEN": 30,
+        "NIG": 15,
+        "Porzellangasse": 30,
+        "Postgasse": 30,
+        "Sensengasse": 30,
+        "UniCampus": 15,
+        "Währinger Straße": 15
+    },
+    "Lehr-Lern-Labor EDEN": {
+        "Lehr-Lern-Labor EDEN": 15,
+        "NIG": 30,
+        "Porzellangasse": 45,
+        "Postgasse": 45,
+        "Sensengasse": 45,
+        "UniCampus": 30,
+        "Währinger Straße": 30
+    },
+    "NIG": {
+        "NIG": 15,
+        "Porzellangasse": 30,
+        "Postgasse": 30,
+        "Sensengasse": 30,
+        "UniCampus": 15,
+        "Währinger Straße": 15
+    },
+    "Porzellangasse": {
+        "Porzellangasse": 15,
+        "Postgasse": 30,
+        "Sensengasse": 30,
+        "UniCampus": 15,
+        "Währinger Straße": 15
+    },
+    "Postgasse": {
+        "Postgasse": 15,
+        "Sensengasse": 30,
+        "UniCampus": 30,
+        "Währinger Straße": 30
+    },
+    "Sensengasse": {
+        "Sensengasse": 15,
+        "UniCampus": 15,
+        "Währinger Straße": 15
+    },
+    "UniCampus": {
+        "UniCampus": 15,
+        "Währinger Straße": 15
+    },
+    "Währinger Straße": {
+        "Währinger Straße": 15
+    }
+}
