@@ -114,6 +114,13 @@ class Schedule:
             self._ects += event.ects()
             self._total_chance *= event.chance()
 
+        self._hash = 0
+        for event in events:
+            self._hash += event.hash()
+
+    def hash(self):
+        return self._hash
+
     def events(self):
         return self._events
 
