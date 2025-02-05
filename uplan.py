@@ -11,6 +11,9 @@ from ufind_extractor import read_course_events, read_course_ids
 if len(sys.argv) < 2:
     print(".json file is required.")
     exit(1)
+elif len(sys.argv) < 3:
+    print("Maximum number of courses required.")
+    exit(1)
 
 def read_module_ids(modules):
     module_ids = []
@@ -60,10 +63,12 @@ if events is None:
 
     exit(0)
 
+maximum_number_courses = int(sys.argv[2])
+
 mandatory_courses = []
 # we can append all course ids that we want to have in our plan
-if len(sys.argv) > 2:
-    for idx in range(2, len(sys.argv)):
+if len(sys.argv) > 3:
+    for idx in range(3, len(sys.argv)):
         mandatory_courses.append(sys.argv[idx])
 
 slots = convert_slots_to_events(json_data["unavailable_slots"])
@@ -72,7 +77,7 @@ filtered_events = filter_events_colliding_with_slots(events, slots)
 filtered_events = sort_events_by_priority(filtered_events, json_data["modules"])
 
 scheduler = Scheduler(mandatory_courses)
-schedules = scheduler.generate_schedules(filtered_events, 9)
+schedules = scheduler.generate_schedules(filtered_events, maximum_number_courses)
 
 text_exporter = TextExporter()
 print(text_exporter.export_schedules(schedules))
