@@ -1,4 +1,4 @@
-weekday_map = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag" ]
+weekday_map = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
 
 class TextExporter:
     _template = ""
@@ -15,7 +15,8 @@ class TextExporter:
     def _export_schedule(self, schedule, number):
         text = "Schedule #" + str(number + 1) + "\n"
         text += "ECTS = " + str(schedule.ects()) + "\n"
-        text += "Probability = " + str(schedule.total_chance() * 100.0) + " %\n\n\n"
+        text += "Probability = " + "{:.2f}".format(schedule.total_chance() * 100.0) + " %\n"
+        text += "Courses = " + ", ".join([event.title() for event in schedule.events()]) + "\n\n"
         
         days = []
         for day in weekday_map:
@@ -42,6 +43,7 @@ class TextExporter:
             date_format += " " * (max_length_of_slot - len(date_format))
 
             days[event_weekday_idx].append(date_format)
+            days[event_weekday_idx].append(" " * max_length_of_slot) # adding a separator to entry below
 
             max_depth = max(max_depth, len(days[event_weekday_idx]))
 
@@ -52,12 +54,14 @@ class TextExporter:
 
             for day in days:
                 if len(day) > idx:
-                    line += day[idx] + "\t\t"
+                    line += day[idx] + "\t"
                 else:
-                    line += " " * len(day[0]) + "\t\t"
+                    line += " " * len(day[0]) + "\t"
             
             max_line_length = max(max_line_length, len(line))
 
             text += line + "\n"
+
+        text += "=" * max_line_length
 
         return text
