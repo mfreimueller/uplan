@@ -16,7 +16,7 @@ def store_cache(module_ids, events):
 # Attempts to load a .cache file, if the following 
 # constraints are fulfilled:
 # 1. the module_ids provided as parameters match 
-# 2. the timestamp is within a 24 hours bound
+# 2. the timestamp is within a week bound
 def try_load_cache(module_ids, rooms):
     try:
         cache_file = open(".cache", "r")
@@ -32,7 +32,7 @@ def try_load_cache(module_ids, rooms):
     cache_dt = datetime.fromtimestamp(cache_data["ts"])
     now_dt = datetime.now()
 
-    if (now_dt - cache_dt).days > 2:
+    if (now_dt - cache_dt).days > 7:
         return None
 
     # then compare the module ids
