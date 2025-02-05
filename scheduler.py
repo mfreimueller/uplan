@@ -103,7 +103,7 @@ class Scheduler:
 class Schedule:
     _events = []
     _ects = 0
-    _total_chance = 100
+    _total_chance = 1
 
     def __init__(self, events):
         self._events = sorted(events, key=sort_events)
