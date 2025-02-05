@@ -122,9 +122,9 @@ def read_course_events(course_id, module, priorities):
         
         max_idx = content.find("\"n\"", content.find("class=\"max\""))
         if max_idx == -1:
-            max = None
+            max_participants = None
         else:
-            max = int(content[max_idx + 4 : content.find("<", max_idx)])
+            max_participants = int(content[max_idx + 4 : content.find("<", max_idx)])
         
         ects_idx = content.find("ects\"")
         if ects_idx == -1:
@@ -149,7 +149,7 @@ def read_course_events(course_id, module, priorities):
             "start": None if time is None else time[:5],
             "end": None if time is None else time[-5:],
             "module_id": module["id"],
-            "chance": None if max is None or participants is None else (max / participants),
+            "chance": None if max_participants is None or participants is None else (max_participants / participants),
             "priority": module["priority"] if has_priority else (module["priority"] / 2),
             "room": room,
             "ects": ects
