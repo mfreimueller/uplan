@@ -1,62 +1,89 @@
 from event import Event
 from weight import MultiplicationWeightCalculator
+import threading
+import time
 
 class Scheduler:
     _weightCalculator = MultiplicationWeightCalculator()
     _mandatory_courses = []
 
+    _generated_schedules_hashes = []
+    _generated_schedules = []
+
     def __init__(self, mandatory_courses):
         self._mandatory_courses = mandatory_courses
+        self._lock = threading.Lock()
 
     def generate_schedules(self, events, max_depth):
+        threads = []
+        for event in events:
+            event_thread = threading.Thread(target=self._create_and_filter_schedules, args=(event, events, max_depth))
+            event_thread.start()
+            threads.append(event_thread)
+        
+        for thread in threads:
+            thread.join()
+
+        # now that we generated a list of plausible candidates, we sort them by their ECTS and the chance thereof
+        self._generated_schedules.sort(key=lambda x: x.ects() * x.total_chance() * len(x.events()), reverse=True)
+
+        return self._generated_schedules[:10]
+
+    def _create_and_filter_schedules(self, event, events, max_depth):
+        schedules = self._create_schedules_for_event(event, events, max_depth)
+
         generated_schedules_hashes = []
         generated_schedules = []
 
-        for event in events:
-            schedules = self._create_schedules_for_event(event, events, max_depth)
+        for idx in range(len(schedules)):
+            # as duplications are possible, we filter any schedules we already processed
+            hash = 0
+            for idx1 in range(1, len(schedules[idx])):
+                hash += schedules[idx][idx1].hash()
+            
+            if hash not in generated_schedules_hashes:
+                generated_schedules_hashes.append(hash)
 
-            if schedules == False:
-                continue
+                # before we continue, we want to make sure that all mandatory courses are in this schedule
+                must_exclude = False
+                for course in self._mandatory_courses:
+                    # if a course id is prefixed with + or - we must in- or exclude it
+                    course_id = course[1:] if course.startswith("+") or course.startswith("-") else course
+                    course_to_exclude = course.startswith("-")
+                    group_name = "1"
+                    
+                    if course.find(":") != -1:
+                        group_name = course_id[-1]
+                        course_id = course[:-2]
 
-            schedules.sort(key=lambda x: x[0], reverse=True)
-
-            # now we select the top 10 schedules for this start events
-            new_schedules = 0
-            for idx in range(min(100, len(schedules))):
-                # as duplications are possible, we filter any schedules we already processed
-                hash = 0
-                for idx1 in range(1, len(schedules[idx])):
-                    hash += int(schedules[idx][idx1].id())
-                
-                if hash not in generated_schedules_hashes:
-                    generated_schedules_hashes.append(hash)
-
-                    # before we continue, we want to make sure that all mandatory courses are in this schedule
-                    misses_course = False
-                    for course in self._mandatory_courses:
-                        found_course = False
-                        for idx2 in range(1, len(schedules[idx])):
-                            event = schedules[idx][idx2]
-                            if event.id() == course:
-                                found_course = True
-                                break
-                        
-                        if not found_course:
-                            misses_course = True
+                    found_course = False
+                    for idx2 in range(1, len(schedules[idx])):
+                        event = schedules[idx][idx2]
+                        if event.id() == course_id and event.group_name() == group_name:
+                            found_course = True
                             break
                     
-                    if not misses_course:
-                        # [1:] to skip the calculated chance at index 0
-                        generated_schedules.append(Schedule(schedules[idx][1:]))
-                        new_schedules += 1
-                        
-                        if new_schedules > 10:
-                            break
+                    if course_to_exclude and found_course:
+                        must_exclude = True
+                        break
+                    elif not course_to_exclude and not found_course:
+                        must_exclude = True
+                        break
+                
+                if not must_exclude:
+                    # [1:] to skip the calculated chance at index 0
+                    generated_schedules.append(Schedule(schedules[idx][1:]))
+        
+        # we are done with filtering the usable schedules. Now we need to add them to the global pool
+        while not self._lock.acquire(blocking=False):
+            time.sleep(1)
+            
+        for schedule in generated_schedules:
+            if schedule.hash() not in self._generated_schedules_hashes:
+                self._generated_schedules_hashes.append(schedule.hash())
+                self._generated_schedules.append(schedule)
 
-        # now that we generated a list of plausible candidates, we sort them by their ECTS and the chance thereof
-        generated_schedules.sort(key=lambda x: x.ects() * x.total_chance(), reverse=True)
-
-        return generated_schedules
+        self._lock.release()
 
     def _create_schedules_for_event(self, event, all_events, max_depth, parents = [], depth = 1, parent_weight = 0):
         if depth > max_depth:
