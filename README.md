@@ -49,9 +49,9 @@ In `priorities` you can specify specific courses that you know you want to take.
 
 ## Usage
 
-`python uplan.py <PATH TO YOUR JSON> <ANY COURSES YOU WANT TO TAKE>`
+`python uplan.py <PATH TO YOUR JSON> <MAX NUMBER OF COURSES> <ANY COURSES YOU WANT TO TAKE>`
 
-uplan runs in the terminal and directly outputs its generated schedules.s
+uplan runs in the terminal and directly outputs its generated schedules.
 
 To make sure that some course really shows up in your planning, you can specify it when calling the program by appending it after your path to the JSON file:
 
@@ -65,3 +65,9 @@ In order to generate your possible schedules, uplan needs to read all possible c
 and is currently prone to timeouts. If this is the case, you either need to run uplan again or supply the necessary data yourself.
 
 uplan refreshes its data every 2 days, in order to operate with the latest information from ufind.
+
+## Rooms
+
+uplan retrieves and stores the location of the courses and uses this information to calculate the time needed to travel
+between two locations. By modifying `rooms.py` you can add rooms as you need them (they need to be within the location as specified on ufind), or
+modify the time you think you need for travel, as these are only my approximations :-)
