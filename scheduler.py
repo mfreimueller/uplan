@@ -72,7 +72,8 @@ class Scheduler:
             colliding = False
             for parent in parents:
                 if event2.is_overlapping(parent):
-                    colliding = true
+                    colliding = True
+                    break
 
             if not colliding:
                 filtered_events.append(event2)
