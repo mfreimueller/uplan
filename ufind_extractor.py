@@ -1,4 +1,5 @@
 import requests
+import time
 
 def extract_module_name(content: str):
     div_idx = content.find("usse-id-vvz")
@@ -51,6 +52,11 @@ def read_course_events(course_id, module, priorities):
     print("Beginning extraction of events from", course_id, "...")
     
     response = requests.get("https://ufind.univie.ac.at/de/course.html?lv=" + course_id + "&semester=2025S")
+    if response.status_code == 504:
+        print("Received status code 504. Retrying...")
+        time.sleep(5)
+        return read_course_events(course_id, module, priorities)
+
     content = response.text
 
     title_idx = content.find("what", content.find("title") + 1)
