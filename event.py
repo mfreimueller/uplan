@@ -35,6 +35,9 @@ class Event:
 
     def title(self):
         return self._data["title"]
+    
+    def group_name(self):
+        return self._data["group_name"]
 
     def priority(self):
         return self._data["priority"]
