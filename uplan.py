@@ -106,4 +106,8 @@ for course in courses_to_exclude:
 schedules = Scheduler().generate_schedules(filtered_events, maximum_number_courses, courses_to_include)
 
 text_exporter = TextExporter()
-print(text_exporter.export_schedules(schedules))
+txt = text_exporter.export_schedules(schedules)
+
+out_file = open("plan.txt", "w")
+out_file.write(txt)
+out_file.close()
