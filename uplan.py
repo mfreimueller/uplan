@@ -76,8 +76,34 @@ slots = convert_slots_to_events(json_data["unavailable_slots"])
 filtered_events = filter_events_colliding_with_slots(events, slots)
 filtered_events = sort_events_by_priority(filtered_events, json_data["modules"])
 
-scheduler = Scheduler(mandatory_courses)
-schedules = scheduler.generate_schedules(filtered_events, maximum_number_courses)
+courses_to_include = []
+courses_to_exclude = []
+
+for course in mandatory_courses:
+    if course.startswith("-"):
+        courses_to_exclude.append(course[1:])
+    else:
+        if course.startswith("+"):
+            courses_to_include.append(course[1:])
+        else:
+            courses_to_include.append(course)
+
+for course in courses_to_exclude:
+    course_id = course[:-2] if course.find(":") != -1 else course
+    group_name = course[-1] if course.find(":") != -1 else "1"
+    
+    courses_without_excluded = []
+    for event in filtered_events:
+        if (event.id() == course_id and event.group_name() == group_name):
+            continue
+        elif event.module_id() == course_id:
+            continue
+        
+        courses_without_excluded.append(event)
+        
+    filtered_events = courses_without_excluded
+
+schedules = Scheduler().generate_schedules(filtered_events, maximum_number_courses, courses_to_include)
 
 text_exporter = TextExporter()
 print(text_exporter.export_schedules(schedules))
