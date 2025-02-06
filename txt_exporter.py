@@ -16,7 +16,11 @@ class TextExporter:
         text = "Schedule #" + str(number + 1) + "\n"
         text += "ECTS = " + str(schedule.ects()) + "\n"
         text += "Probability = " + "{:.2f}".format(schedule.total_chance() * 100.0) + " %\n"
-        text += "Courses = " + ", ".join([event.title() for event in schedule.events()]) + "\n\n"
+        
+        courses = [event.title() for event in schedule.events()]
+        courses.sort()
+
+        text += "Courses = " + ", ".join(courses) + "\n\n"
         
         days = []
         for day in weekday_map:
