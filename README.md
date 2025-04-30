@@ -1,4 +1,7 @@
+This repository is read only, as I am not planning on developing it further at this point.
+
 # uplan
+
 Planning tool for University of Vienna's ufind, to filter out courses based on given time constraints.
 
 This tools is a solution to a problem I have been facing for the last couple of years. Instead of painstakingly
